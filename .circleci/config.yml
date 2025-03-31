@@ -1,4 +1,4 @@
-<!-- @author Name:Jamel Boumazouna ,Student Number:x21122768-->
+#  @author Name:Jamel Boumazouna ,Student Number:x21122768
 version: 2.1
 
 workflows:
@@ -26,15 +26,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: verify nvm
-          command: node -v && npm -v
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          name: verify html
+          command: ls -la && file Index.html
       - run:
-          name: install-npm-packages
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
- 
+          name: verify css
+          command: ls -la && file stylesheet.css
+
