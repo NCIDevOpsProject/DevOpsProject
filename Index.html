@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+ <!-- @author Name:Karl Miller ,Student Number:x21522489 -->
+ 
+<head> 
+    <link rel="stylesheet" href="stylesheet.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Planner</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { margin: 5px; padding: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 10px; text-align: left; }
+        button { cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Trip Planner</h2>
+    <label>Name: <input type="text" id="name"></label>
+    <label>Date: <input type="date" id="date"></label>
+    <label>Time: <input type="time" id="time"></label>
+    <label>Destination: <input type="text" id="destination"></label>
+    <button onclick="addTrip()">Add Trip</button>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Destination</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tripList"></tbody>
+    </table>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", loadTrips);
+        
+        function addTrip() {
+            let name = document.getElementById("name").value;
+            let date = document.getElementById("date").value;
+            let time = document.getElementById("time").value;
+            let destination = document.getElementById("destination").value;
+            
+            if (!name || !date || !time || !destination) {
+                alert("Please fill all fields");
+                return;
+            }
+            
+            let trip = { name, date, time, destination };
+            let trips = JSON.parse(localStorage.getItem("trips")) || [];
+            trips.push(trip);
+            localStorage.setItem("trips", JSON.stringify(trips));
+            
+            loadTrips();
+        }
+        
+        function loadTrips() {
+            let trips = JSON.parse(localStorage.getItem("trips")) || [];
+            let tripList = document.getElementById("tripList");
+            tripList.innerHTML = "";
+            
+            trips.forEach((trip, index) => {
+                let row = `<tr>
+                    <td>${trip.name}</td>
+                    <td>${trip.date}</td>
+                    <td>${trip.time}</td>
+                    <td>${trip.destination}</td>
+                    <td>
+                        <button onclick="modifyTrip(${index})">Modify</button>
+                        <button onclick="deleteTrip(${index})">Delete</button>
+                    </td>
+                </tr>`;
+                tripList.innerHTML += row;
+            });
+        }
+
+        function modifyTrip(index) {
+            let trips = JSON.parse(localStorage.getItem("trips")) || [];
+            let trip = trips[index];
+            
+            document.getElementById("name").value = trip.name;
+            document.getElementById("date").value = trip.date;
+            document.getElementById("time").value = trip.time;
+            document.getElementById("destination").value = trip.destination;
+            
+            deleteTrip(index);
+        }
+        
+        function deleteTrip(index) {
+            let trips = JSON.parse(localStorage.getItem("trips")) || [];
+            trips.splice(index, 1);
+            localStorage.setItem("trips", JSON.stringify(trips));
+            loadTrips();
+        }
+    </script>
+</body>
+</html>
