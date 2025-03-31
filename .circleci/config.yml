@@ -28,8 +28,7 @@ jobs:
       - run:
           name: verify html
           command: ls -la && file Index.html
-          
+
       - run:
           name: verify css
           command: ls -la && file stylesheet.css
-
