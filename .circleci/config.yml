@@ -20,7 +20,6 @@ workflows:
 
 jobs:
   build:
-    working_directory: ~/ItineraryApp
     docker:
         - image: cimg/base:stable
     steps:
