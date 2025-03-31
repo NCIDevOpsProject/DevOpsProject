@@ -22,7 +22,7 @@ jobs:
   build:
     working_directory: ~/ItineraryApp
     docker:
-        - image: cimg/node:20.17
+        - image: cimg/base:stable
     steps:
       - checkout
       - run:
