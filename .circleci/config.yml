@@ -10,18 +10,38 @@ workflows:
             branches:
               only:
                 - main
+      - deploy:
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - build
 
 jobs:
   build:
     docker:
-        - image: cimg/base:stable
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Verify HTML
+          command: ls -la && file Index.html
+      - run:
+          name: Verify CSS
+          command: ls -la && file stylesheet.css
+
+  deploy:
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
 
-      - run:
-          name: verify html
-          command: ls -la && file Index.html
+      - add_ssh_keys:
+          fingerprints:
+            - SHA256:j1381kYHZ/taUp1cl2VnF8s7XZcU6aV+MJChbukYSiY
 
       - run:
-          name: verify css
-          command: ls -la && file stylesheet.css
+          name: Deploy to EC2 Apache Server
+          command: |
+            scp -o StrictHostKeyChecking=no -r Index.html stylesheet.css ubuntu@52.7.203.238:/var/www/html
