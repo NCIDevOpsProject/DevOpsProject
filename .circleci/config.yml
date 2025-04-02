@@ -26,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: Verify HTML
-          command: ls -la && file Index.html
+          command: ls -la && file index.html
       - run:
           name: Verify CSS
           command: ls -la && file stylesheet.css
@@ -42,6 +42,6 @@ jobs:
             - SHA256:j1381kYHZ/taUp1cl2VnF8s7XZcU6aV+MJChbukYSiY
 
       - run:
-          name: Deploy to EC2 Apache Server
+          name: Deploy to EC2
           command: |
-            scp -o StrictHostKeyChecking=no -r Index.html stylesheet.css ubuntu@52.7.203.238:/var/www/html
+            scp -o StrictHostKeyChecking=no -r index.html stylesheet.css ubuntu@52.7.203.238:/var/www/html
